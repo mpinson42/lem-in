@@ -17,5 +17,5 @@ int	ft_absolut(int i)
 		i = -i;
 		return (i);
 	}
-	return (0);
+	return (i);
 }

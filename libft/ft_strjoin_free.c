@@ -6,7 +6,7 @@
 /*   By: mpinson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/10 20:57:23 by mpinson           #+#    #+#             */
-/*   Updated: 2016/11/10 22:31:56 by mpinson          ###   ########.fr       */
+/*   Updated: 2016/12/28 10:06:16 by mpinson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void	ft_joinfree(char *s1, char *s2, int mode)
 {
 	if (s1 && mode == 0)
-		free(s1);
+		ft_strdel(&s1);
 	if (s2 && mode == 1)
-		free(s2);
+		ft_strdel(&s2);
 	if (s1 && s2 && mode == 2)
 	{
-		free(s1);
-		free(s2);
+		ft_strdel(&s1);
+		ft_strdel(&s2);
 	}
 }
 
