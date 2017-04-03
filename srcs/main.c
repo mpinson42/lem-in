@@ -162,7 +162,6 @@ int ft_pars(t_env *e)
 			break;
 		if(status == 0)
 		{
-			ft_putnbr(count_sapce);
 			if(count_sapce != 2)
 				break;
 			if(ft_get_salle(e, str, &start, &end) == -1)
