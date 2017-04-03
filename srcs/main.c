@@ -67,17 +67,43 @@ int ft_get_salle(t_env *e, char *str, int *start, int *end)
 	e->s[i].nb_salle = ft_atoi(tab[0]);
 	e->s[i].x = ft_atoi(tab[1]);
 	e->s[i].y = ft_atoi(tab[2]);
+	e->s[i].size_bridg = 0;
 	e->leng_salle++;
 	if(start[0] == 1)
 		e->s[i].start = 1;
 	else
 		e->s[i].start = 0;
-
 	if(end[0] == 1)
 		e->s[i].end = 1;
 	else
 		e->s[i].end = 0;
 	return(0);
+}
+
+void ft_bridg(t_env *e, int bridg, int i)
+{
+	int *tmp;
+	int y;
+
+	y = 0;
+	while(y < e->s[i].size_bridg)
+	{
+		if(e->s[i].bridg[y] == bridg)
+			return;
+		y++;
+	}
+	tmp = e->s[i].bridg;
+	e->s[i].bridg = (int *)malloc(sizeof(int) * (e->s[i].size_bridg + 1));
+	//ft_bzero(e->s[i].bridg, e->s[i].size_bridg + 42);
+	y = 0;
+	while(y < e->s[i].size_bridg)
+	{
+		e->s[i].bridg[y] = tmp[y];
+		y++; 
+	}
+	e->s[i].bridg[y] = bridg;
+	e->s[i].size_bridg++;
+	//printf("%d\n", e->s[i].size_bridg);
 }
 
 int ft_pars(t_env *e)
@@ -200,13 +226,50 @@ int ft_pars(t_env *e)
 		ft_putstr("ERROR");
 		//return(-1);
 	}
+	
+
+
+	e->s[e->leng_salle].size_bridg = 0;
+
+
+	i = 0;
+	stop = 0;
+	while(i < e->leng_salle)
+	{
+		stop = 0;
+		while(stop < e->leng_bridg)
+		{
+
+			if(e->s[i].nb_salle == e->b[stop].bridg_1)
+				ft_bridg(e, e->b[stop].bridg_2, i);
+			if(e->s[i].nb_salle == e->b[stop].bridg_2)
+				ft_bridg(e, e->b[stop].bridg_1, i);
+
+
+			stop++;
+		}
+		i++;
+	}
+
+	printf("%d\n", e->s[0].bridg[0]);
+
+
 
 	ft_putstr("\n\n\n\n\n");
 		i = 0;
 		printf("nbfourmi : %d\nsalle :\n", e->nb_fourmi);
 		while(i < e->leng_salle)
 		{
-			printf("-> %d %d %d      %d    %d\n", e->s[i].nb_salle, e->s[i].x, e->s[i].y , e->s[i].start, e->s[i].end);
+			printf("-> %d %d %d      %d    %d", e->s[i].nb_salle, e->s[i].x, e->s[i].y , e->s[i].start, e->s[i].end);
+			stop = 0;
+		
+      		while(stop < e->s[i].size_bridg)
+      		{
+      		//	printf("      %d\n", e->s[i].size_bridg);
+				printf("         %d ", e->s[i].bridg[stop]);
+				stop++;
+			}
+			printf("\n");
 			i++;
 		}
 		i = 0;

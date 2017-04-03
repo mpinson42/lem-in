@@ -9,6 +9,8 @@ typedef struct s_salle
 	int y;
 	int nb_salle;
 	int is_full;
+	int *bridg;
+	int size_bridg;
 	int start;
 	int end;
 }				t_salle;
