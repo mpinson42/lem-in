@@ -3,6 +3,10 @@
 
 # include "libft.h"
 
+
+
+#include <stdio.h>
+
 typedef struct s_salle
 {
 	int x;
@@ -30,8 +34,12 @@ typedef struct s_env
 	int leng_salle;
 	int leng_bridg;
 	int nb_fourmi;
+	int poid_max;
 }				t_env;
 
 void edit_poid(t_env *e);
+void ft_resolv(t_env *e);
+int ft_strlen_tab(char **tab);
+int ft_pars(t_env *e);
 
 #endif

@@ -1,10 +1,10 @@
 NAME = lem-in
 
-SRC = ./srcs/main.c ./srcs/edit_poid.c
+SRC = ./srcs/main.c ./srcs/edit_poid.c ./srcs/ft_resolv.c ./srcs/ft_pars.c
 
 #FLAGS = -Wall -Wextra -Werror
 
-SRC2 = ./main.o ./edit_poid.o
+SRC2 = ./main.o ./edit_poid.o ./ft_resolv.o ./ft_pars.o
 
 all: $(NAME)
 

@@ -79,7 +79,10 @@ void edit_poid(t_env *e)
 						while(y < e->s[z].size_bridg)
 						{
 							if(e->s[z].bridg[y] == e->s[i].nb_salle && a < e->s[z].poid && ft_check(z))
+							{
+								e->poid_max = a + 1;
 								e->s[z].poid = a + 1;
+							}
 							y++;
 						}
 						z++;
