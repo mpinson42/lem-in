@@ -17,6 +17,7 @@ typedef struct s_salle
 	int size_bridg;
 	int poid;
 	int start;
+	int num_fourmi;
 	int end;
 }				t_salle;
 
