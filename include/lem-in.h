@@ -11,6 +11,7 @@ typedef struct s_salle
 	int is_full;
 	int *bridg;
 	int size_bridg;
+	int poid;
 	int start;
 	int end;
 }				t_salle;
@@ -30,5 +31,7 @@ typedef struct s_env
 	int leng_bridg;
 	int nb_fourmi;
 }				t_env;
+
+void edit_poid(t_env *e);
 
 #endif

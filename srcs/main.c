@@ -68,6 +68,7 @@ int ft_get_salle(t_env *e, char *str, int *start, int *end)
 	e->s[i].x = ft_atoi(tab[1]);
 	e->s[i].y = ft_atoi(tab[2]);
 	e->s[i].size_bridg = 0;
+	e->s[i].poid = 255;
 	e->leng_salle++;
 	if(start[0] == 1)
 		e->s[i].start = 1;
@@ -226,12 +227,7 @@ int ft_pars(t_env *e)
 		ft_putstr("ERROR");
 		//return(-1);
 	}
-	
-
-
 	e->s[e->leng_salle].size_bridg = 0;
-
-
 	i = 0;
 	stop = 0;
 	while(i < e->leng_salle)
@@ -250,6 +246,12 @@ int ft_pars(t_env *e)
 		}
 		i++;
 	}
+	edit_poid(e);
+
+
+
+
+
 
 	printf("%d\n", e->s[0].bridg[0]);
 
@@ -260,7 +262,7 @@ int ft_pars(t_env *e)
 		printf("nbfourmi : %d\nsalle :\n", e->nb_fourmi);
 		while(i < e->leng_salle)
 		{
-			printf("-> %d %d %d      %d    %d", e->s[i].nb_salle, e->s[i].x, e->s[i].y , e->s[i].start, e->s[i].end);
+			printf("-> %d %d %d      %d    %d ->%d", e->s[i].nb_salle, e->s[i].x, e->s[i].y , e->s[i].start, e->s[i].end, e->s[i].poid);
 			stop = 0;
 		
       		while(stop < e->s[i].size_bridg)
