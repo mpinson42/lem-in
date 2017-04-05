@@ -6,143 +6,11 @@
 /*   By: mpinson <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/05 14:09:48 by mpinson           #+#    #+#             */
-/*   Updated: 2017/04/05 15:10:37 by mpinson          ###   ########.fr       */
+/*   Updated: 2017/04/05 17:34:35 by mpinson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem-in.h"
-
-int		ft_get_bridg(t_env *e, char *str)
-{
-	char	**tab;
-	t_bridg	*tmp;
-	int		i;
-
-	i = -1;
-	tmp = e->b;
-	tab = ft_strsplit(str, '-');
-	if (ft_strlen_tab(tab) != 2 || tab[1][0] == '\n')
-		return (-1);
-	e->b = (t_bridg *)malloc(sizeof(t_bridg) * (e->leng_bridg + 1));
-	while (++i < e->leng_bridg)
-		e->b[i] = tmp[i];
-	e->b[i].bridg_1 = ft_atoi(tab[0]);
-	e->b[i].bridg_2 = ft_atoi(tab[1]);
-	e->leng_bridg++;
-	return (0);
-}
-
-int		ft_get_salle(t_env *e, char *str, int *start, int *end)
-{
-	char	**tab;
-	t_salle	*tmp;
-	int		i;
-
-	i = -1;
-	tmp = e->s;
-	tab = ft_strsplit(str, ' ');
-	if (ft_strlen_tab(tab) != 3 || tab[2][0] == '\n')
-		return (-1);
-	if (!(e->s = (t_salle *)malloc(sizeof(t_salle) * (e->leng_salle + 1))))
-		return (-1);
-	while (++i < e->leng_salle)
-		e->s[i] = tmp[i];
-	e->s[i].nb_salle = ft_atoi(tab[0]);
-	e->s[i].x = ft_atoi(tab[1]);
-	e->s[i].y = ft_atoi(tab[2]);
-	e->s[i].size_bridg = 0;
-	e->s[i].poid = 255;
-	e->leng_salle++;
-	e->s[i].is_full = 0;
-	if (start[0] == 1)
-	{
-		e->s[i].is_full = e->nb_fourmi;
-		e->s[i].start = 1;
-	}
-	else
-		e->s[i].start = 0;
-	if (end[0] == 1)
-		e->s[i].end = 1;
-	else
-		e->s[i].end = 0;
-	return (0);
-}
-
-int	ft_bridg(t_env *e, int bridg, int i)
-{
-	int *tmp;
-	int y;
-
-	y = -1;
-	while (++y < e->s[i].size_bridg)
-	{
-		if (e->s[i].bridg[y] == bridg)
-			return (-1);
-	}
-	tmp = e->s[i].bridg;
-	if (!(e->s[i].bridg = (int *)malloc(sizeof(int) *
-					(e->s[i].size_bridg + 1))))
-		return (-1);
-	y = -1;
-	while (++y < e->s[i].size_bridg)
-		e->s[i].bridg[y] = tmp[y];
-	e->s[i].bridg[y] = bridg;
-	e->s[i].size_bridg++;
-	return (0);
-}
-
-int		ft_pars_check_htag(t_env *e, t_pars *p)
-{
-	if (p->str[0] == '#' && ft_strcmp(p->str, "##end") != 0 &&
-			ft_strcmp(p->str, "##start") != 0)
-		return (-1);
-	if (p->status == -1)
-	{
-		while (p->str[++p->i])
-		{
-			if ((ft_isdigit(p->str[p->i]) == 0 && p->str[p->i] != '\n')
-					|| p->str[0] == '\n')
-				p->stop = 1;
-		}
-		if (p->stop == 1)
-			return (-2);
-		e->nb_fourmi = ft_atoi(p->str);
-		p->status = 0;
-		ft_putstr(p->str);
-		ft_putstr("\n");
-		return (-1);
-	}
-	return (0);
-}
-
-int		ft_pars_check_htag2(t_env *e, t_pars *p)
-{
-	if (p->str[0] == 0)
-		return (-2);
-	if (ft_pars_check_htag(e, p) == -1)
-		return (-1);
-	if (ft_pars_check_htag(e, p) == -2)
-		return (-2);
-	if (ft_strcmp(p->str, "##start") == 0 && p->start == 0)
-	{
-		p->start++;
-		ft_putstr(p->str);
-		ft_putstr("\n");
-		return (-1);
-	}
-	if (ft_strcmp(p->str, "##start") == 0)
-		return (-2);
-	if (ft_strcmp(p->str, "##end") == 0 && p->end == 0)
-	{
-		p->end++;
-		ft_putstr(p->str);
-		ft_putstr("\n");
-		return (-1);
-	}
-	if (ft_strcmp(p->str, "##end\n") == 0)
-		return (-2);
-	return (0);
-}
+#include "lem_in.h"
 
 int		phase2(t_env *e, t_pars *p)
 {
@@ -225,26 +93,28 @@ void	ft_get_line(t_env *e, t_pars *p)
 	}
 }
 
-void setup(t_env *e)
+int		setup(t_env *e, t_pars *p)
 {
-	
-}
-
-int		ft_pars(t_env *e)
-{
-	t_pars p;
-
 	ft_bzero(e, sizeof(e));
-	ft_bzero(&p, sizeof(p));
-	p.status = -1;
-	ft_get_line(e, &p);
-	if (p.start != 2 || p.end != 2 || e->leng_salle < 2 || e->nb_fourmi <= 0)
+	ft_bzero(p, sizeof(p[0]));
+	p->status = -1;
+	ft_get_line(e, p);
+	if (p->start != 2 || p->end != 2 || e->leng_salle < 2 || e->nb_fourmi <= 0)
 	{
 		ft_putstr("ERROR");
 		return (-1);
 	}
 	e->s[e->leng_salle].size_bridg = 0;
-	p.i = -1;
+	p->i = -1;
+	return (0);
+}
+
+int		ft_parsing(t_env *e)
+{
+	t_pars p;
+
+	if (setup(e, &p) == -1)
+		return (-1);
 	while (++p.i < e->leng_salle)
 	{
 		p.stop = -1;

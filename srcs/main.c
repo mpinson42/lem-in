@@ -1,6 +1,18 @@
-#include "lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpinson <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/05 17:20:07 by mpinson           #+#    #+#             */
+/*   Updated: 2017/04/05 17:20:11 by mpinson          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_strlen_tab(char **tab)
+#include "lem_in.h"
+
+int		ft_strlen_tab(char **tab)
 {
 	int	i;
 
@@ -12,11 +24,11 @@ int ft_strlen_tab(char **tab)
 	return (i);
 }
 
-int ft_check_patch(t_env *e)
+int		ft_check_patch(t_env *e)
 {
-	int i;
-	int j;
-	int y;
+	int	i;
+	int	j;
+	int	y;
 
 	y = 0;
 	j = -1;
@@ -38,18 +50,18 @@ int ft_check_patch(t_env *e)
 		}
 	}
 	ft_putstr("ERROR PATH");
-	return(-1);
+	return (-1);
 }
 
-int main()
+int		main(void)
 {
-	t_env e;
-	int i;
+	t_env	e;
+	int		i;
 
 	i = 0;
-	if (ft_pars(&e) == -1)
+	if (ft_parsing(&e) == -1)
 		return (-1);
-	if(ft_check_patch(&e) == -1)
+	if (ft_check_patch(&e) == -1)
 		return (-1);
 	ft_resolv(&e);
 	return (0);
