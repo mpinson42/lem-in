@@ -38,6 +38,46 @@ typedef struct s_env
 	int poid_max;
 }				t_env;
 
+typedef struct s_resolv
+{
+	int fin;
+	int i;
+	int poid;
+	int save;
+	int save_one;
+	int bridg;
+	int y;
+	int z;
+	int test;
+	int nb_fourmi;
+	int fourmi[255];
+	int fourmiz;
+}				t_resolv;
+
+typedef struct s_pars
+{
+	int status;
+	char *str;
+	int  end;
+	int start;
+	int i;
+	int count;
+	char **tab;
+	int stop;
+	int count_sapce;	
+}				t_pars;
+
+typedef struct s_edit
+{
+	int i;
+	int y;
+	int z;
+	int x;
+	int a;
+	int chr[255];
+	int bol;
+}				t_edit;
+
 void edit_poid(t_env *e);
 void ft_resolv(t_env *e);
 int ft_strlen_tab(char **tab);

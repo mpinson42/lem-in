@@ -1,205 +1,98 @@
 #include "lem-in.h"
 
-void ft_print(t_env *e)
-{
-	int i;
-
-	i = 0;
-	while(i < e->leng_salle)
-	{
-		if(e->s[i].is_full && e->s[i].end != 1 && e->s[i].start != 1)
-			printf("L%d-%d ", e->s[i].num_fourmi, e->s[i].nb_salle);
-
-		i++;
-	}
-	
-}
-
 void ft_resolv(t_env *e)
 {
-	int fin;
-	int i;
-	int poid;
-	int save;
-	int save_one;
-	int bridg;
-	int y;
-	int z;
-	int test = 0;
-	int nb_fourmi;
-	int fourmi[255];
-	int fourmiz;
+	t_resolv r;
 
-	fin = 0;
-	nb_fourmi = 1;
-	while(e->s[fin].end != 1)
-		fin++;
-	while(e->s[fin].is_full != e->nb_fourmi)       //tant que la parti est pas fini
+	r.test = 0;
+	r.fin = 0;
+	r.nb_fourmi = 1;
+	while (e->s[r.fin].end != 1)
+		r.fin++;
+	while (e->s[r.fin].is_full != e->nb_fourmi)       //tant que la parti est pas fini
 	{
-		//printf("-------TOUR--------------\n");
 		printf("\n");
-		poid = 1;
-		ft_memset(fourmi, -1 ,255);
-		fourmiz = 0;
-		while(poid <= e->poid_max)                 //tant que tout les poid sont pas check
+		r.poid = 0;
+		ft_memset(r.fourmi, -1 ,255);
+		r.fourmiz = 0;
+		while (++r.poid <= e->poid_max)                 //tant que tout les poid sont pas check
 		{
-			i = 0;
-			while(i < e->leng_salle) //check poid
+			r.i = -1;
+			while (++r.i < e->leng_salle) //check poid
 			{
-				if(e->s[i].poid == poid && e->s[i].is_full) // si un poid corespond
+				if (e->s[r.i].poid == r.poid && e->s[r.i].is_full) // si un poid corespond
 				{
-					while(e->s[i].start == 1 && e->s[i].is_full && save_one != -2)
+					while (e->s[r.i].start == 1 && e->s[r.i].is_full && r.save_one != -2)
 					{
-						y = 0;
-						save_one = -1;
-						while(y < e->s[i].size_bridg)   //check les tunelle
+						r.y = -1;
+						r.save_one = -1;
+						while (++r.y < e->s[r.i].size_bridg)   //check les tunelle
 						{
-							z = 0;
-							save = 255;
-							while(z < e->leng_salle) //cherche la sorti des tunelle
+							r.z = -1;
+							r.save = 255;
+							while (++r.z < e->leng_salle) //cherche la sorti des tunelle
 							{
-								if(e->s[i].bridg[y] == e->s[z].nb_salle && e->s[z].poid < e->s[i].poid && e->s[z].poid < save && (e->s[z].is_full == 0 || e->s[z].end == 1))
+								if (e->s[r.i].bridg[r.y] == e->s[r.z].nb_salle && e->s[r.z].poid < e->s[r.i].poid && e->s[r.z].poid < r.save && (e->s[r.z].is_full == 0 || e->s[r.z].end == 1))
 								{
-									save_one = e->s[z].nb_salle;
-									save = e->s[z].poid;
-
+									r.save_one = e->s[r.z].nb_salle;
+									r.save = e->s[r.z].poid;
 								}
-								z++;
 							}
-
-							y++;
 						}
-						if(save_one != -1)
+						if (r.save_one != -1)
 						{
-							z = 0;
-							while(z < e->leng_salle)
+							r.z = -1;
+							while (++r.z < e->leng_salle)
 							{
-									
-								if(e->s[z].nb_salle == save_one)
+								if (e->s[r.z].nb_salle == r.save_one)
 								{
-
-							//		printf("----->");
-									e->s[z].is_full++;
-									e->s[i].is_full--;
-									e->s[z].num_fourmi = nb_fourmi;
-								//	if(e->s[z].end == 1)
-										printf("L%d-%d ", nb_fourmi, e->s[z].nb_salle);
-									nb_fourmi++;
+									e->s[r.z].is_full++;
+									e->s[r.i].is_full--;
+									e->s[r.z].num_fourmi = r.nb_fourmi;
+										printf("L%d-%d ", r.nb_fourmi, e->s[r.z].nb_salle);
+									r.nb_fourmi++;
 								}
-								z++;
 							}
 						}
 						else
-							save_one = -2;
-				/*		sleep(1);
-						test = 0;
-						while(test < e->leng_salle)
-						{
-							printf("-> %d %d %d		%d %d	->%d _>%d\n", e->s[test].nb_salle, e->s[test].x, e->s[test].y , e->s[test].start, e->s[test].end, e->s[test].poid, e->s[test].is_full);
-							test++;
-						}
-						printf("\n\n\n\n");*/
+							r.save_one = -2;
 					}
-					y = 0;
-					save_one = -1;
-					while(y < e->s[i].size_bridg && e->s[i].start == 0 && save_one != -2)   //check les tunelle
+					r.y = -1;
+					r.save_one = -1;
+					r.save = 255;
+					while (++r.y < e->s[r.i].size_bridg && e->s[r.i].start == 0 && r.save_one != -2)   //check les tunelle
 					{
-						z = 0;
-						save = 255;
-						while(z < e->leng_salle) //cherche la sorti des tunelle
+						r.z = -1;
+						
+						while (++r.z < e->leng_salle) //cherche la sorti des tunelle
 						{
-							if(e->s[i].bridg[y] == e->s[z].nb_salle && e->s[z].poid < e->s[i].poid && e->s[z].poid < save && (e->s[z].is_full == 0 || e->s[z].end == 1))
+							if (e->s[r.i].bridg[r.y] == e->s[r.z].nb_salle && e->s[r.z].poid <= e->s[r.i].poid && e->s[r.z].poid < r.save && (e->s[r.z].is_full == 0 || e->s[r.z].end == 1))
 							{
-								save_one = e->s[z].nb_salle;
-								save = e->s[z].poid;
-
+								r.save_one = e->s[r.z].nb_salle;
+								r.save = e->s[r.z].poid;
 							}
-							z++;
 						}
-
-						y++;
 					}
 
-					if(save_one != -1)
+					if (r.save_one != -1)
 					{
-						z = 0;
-						while(z < e->leng_salle)
+						r.z = -1;
+						while (++r.z < e->leng_salle)
 						{
-							//	printf("%d\n", save_one);
-							if(e->s[z].nb_salle == save_one)
+							if (e->s[r.z].nb_salle == r.save_one)
 							{
-								e->s[z].is_full++;
-								e->s[i].is_full--;
-								e->s[z].num_fourmi = e->s[i].num_fourmi;
-								e->s[i].num_fourmi = 0;
-								//if(e->s[z].end == 1)
-										printf("L%d-%d ", e->s[z].num_fourmi, e->s[z].nb_salle);
-							//	printf("L%d-%d ", e->s[z].num_fourmi, e->s[z].nb_salle);
+								e->s[r.z].is_full++;
+								e->s[r.i].is_full--;
+								e->s[r.z].num_fourmi = e->s[r.i].num_fourmi;
+								e->s[r.i].num_fourmi = 0;
+								printf("L%d-%d ", e->s[r.z].num_fourmi, e->s[r.z].nb_salle);
 							}
-							z++;
 						}
 					}
 					else
-					{
-
-						save_one = -2;
-					}
-			/*		sleep(1);
-					test = 0;
-					while(test < e->leng_salle)
-					{
-						printf("-> %d %d %d		%d %d	->%d _>%d\n", e->s[test].nb_salle, e->s[test].x, e->s[test].y , e->s[test].start, e->s[test].end, e->s[test].poid, e->s[test].is_full);
-						test++;
-					}
-					printf("\n\n\n\n");*/
+						r.save_one = -2;
 				}
-				
-
-
-
-
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				i++;
-			}
-			//ft_print(e);	
-			poid++;
+			}	
 		}
-
-
-
-
-
-
 	}	
 }
